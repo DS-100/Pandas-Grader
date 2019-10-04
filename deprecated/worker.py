@@ -101,7 +101,7 @@ def main(api_url):
             score_content = {
                 "bid": backup_id,
                 "score": okpy_result["total"],
-                "kind": "Total",
+                "kind": "Autograder",
                 "message": okpy_result["msg"],
             }
             score_endpoint = (
