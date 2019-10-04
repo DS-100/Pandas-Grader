@@ -3,6 +3,9 @@ kind: Job
 metadata:
   name: {{ name }}
 spec:
+  # https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/#ttl-mechanism-for-finished-jobs
+  # pods will be kept around for a day
+  ttlSecondsAfterFinished: 86400
   backoffLimit: 0
   parallelism: {{ parallelism }}
   completions: {{ num_jobs }}
@@ -10,7 +13,7 @@ spec:
     spec:
       containers:
       - name: {{ name }}
-        image: simonmok/jhub-gofer:latest
+        image: wwhuang/jhub-gofer:latest
         command: [
           "python", "worker.py", 
           "--api-url", "{{ api_addr }}"]

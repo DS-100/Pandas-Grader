@@ -1,8 +1,5 @@
-requests
-uvicorn
-starlette
-sqlitedict
+django
+django-constance[database]
 kubernetes
-jinja2
 pyyaml
-pygments
+jinja2

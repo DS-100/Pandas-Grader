@@ -1,0 +1,9 @@
+git+https://github.com/DS-100/Gofer-Grader.git@plain_text_repr
+requests
+click
+ipython
+bs4
+lxml
+nltk
+wordcloud
+ansi2html
