@@ -12,6 +12,7 @@ import requests
 from ansi2html import Ansi2HTMLConverter
 
 import gofer.ok
+import pandas as pd
 
 GRADING_DIR = os.getcwd()
 
@@ -117,6 +118,7 @@ def main(api_url):
         print(e)
 
     print(log_buffer.getvalue())
+    print("Pandas Version: " + str(pd.__version__))
     print("Sending log to api/ag/v1/report_done")
 
     report_done_endpoint = f"{api_url}/api/ag/v1/report_done/{job_id}"
