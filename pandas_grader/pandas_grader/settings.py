@@ -82,7 +82,7 @@ WSGI_APPLICATION = "pandas_grader.wsgi.application"
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 
-# DB settings for sqlite3.
+# DB settings for postgres.
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
