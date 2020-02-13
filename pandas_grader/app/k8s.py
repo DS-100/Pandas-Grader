@@ -37,6 +37,7 @@ kind: Job
 metadata:
   name: {{ name }}
 spec:
+  ttlSecondsAfterFinished: 0
   backoffLimit: 0
   parallelism: {{ parallelism }}
   completions: {{ num_jobs }}
