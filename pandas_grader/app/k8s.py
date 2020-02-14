@@ -59,4 +59,13 @@ spec:
           memory: "4G"
       nodeSelector:
         hub.jupyter.org/pool-name: beta-pool
+      tolerations:
+        - key: "hub.jupyter.org/dedicated"
+          operator: "Equal"
+          value: "user"
+          effect: "NoSchedule"
+        - key: "hub.jupyter.org_dedicated"
+          operator: "Equal"
+          value: "user"
+          effect: "NoSchedule"
 """
