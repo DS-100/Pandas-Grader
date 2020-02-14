@@ -42,8 +42,6 @@ spec:
   backoffLimit: 0
   parallelism: {{ parallelism }}
   completions: {{ num_jobs }}
-  nodeSelector:
-      hub.jupyter.org/pool-name: beta-pool
   template:
     spec:
       containers:
@@ -59,4 +57,6 @@ spec:
           memory: "2G"
         limits:
           memory: "4G"
+      nodeSelector:
+        hub.jupyter.org/pool-name: beta-pool
 """
