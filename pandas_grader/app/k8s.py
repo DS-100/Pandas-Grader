@@ -53,7 +53,7 @@ spec:
           "--api-url", "{{ api_addr }}"]
         resources:
           requests:
-            memory: "768M"
+            memory: "512M"
           limits:
             memory: "2.25G"
       restartPolicy: Never
