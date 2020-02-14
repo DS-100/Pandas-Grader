@@ -50,13 +50,13 @@ spec:
         command: [
           "python", "worker.py", 
           "--api-url", "{{ api_addr }}"]
+        resources:
+          requests:
+            memory: "768M"
+          limits:
+            memory: "2.25G"
       restartPolicy: Never
       imagePullPolicy: Always
-      resources:
-        requests:
-          memory: "768M"
-        limits:
-          memory: "2.25G"
       nodeSelector:
         hub.jupyter.org/pool-name: beta-pool
       tolerations:
