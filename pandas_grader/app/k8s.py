@@ -36,11 +36,14 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: {{ name }}
+  namespace: data100-grader
 spec:
   ttlSecondsAfterFinished: 0
   backoffLimit: 0
   parallelism: {{ parallelism }}
   completions: {{ num_jobs }}
+  nodeSelector:
+      hub.jupyter.org/pool-name: beta-pool
   template:
     spec:
       containers:
