@@ -37,6 +37,7 @@ kind: Job
 metadata:
   name: {{ name }}
   namespace: data100-grader
+  labels: {"heritage":"Pandas-Grader"}
 spec:
   ttlSecondsAfterFinished: 0
   backoffLimit: 0
