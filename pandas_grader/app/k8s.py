@@ -54,9 +54,9 @@ spec:
       imagePullPolicy: Always
       resources:
         requests:
-          memory: "2G"
+          memory: "768M"
         limits:
-          memory: "4G"
+          memory: "2.25G"
       nodeSelector:
         hub.jupyter.org/pool-name: beta-pool
       tolerations:
