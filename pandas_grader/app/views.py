@@ -2,10 +2,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpRequest, HttpResponse, JsonResponse, FileResponse
 from django.views.decorators.http import require_POST
 import json
-from constance import config
 from .models import Assignment, GradingJob, JobStatusEnum, translate_okpy_status
 from django.db import transaction
 from .k8s import add_k_workers
+from kubernetes import client, config
+
 
 # Help with debugging
 from ipware import get_client_ip
