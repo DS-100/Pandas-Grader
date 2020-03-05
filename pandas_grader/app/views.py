@@ -68,7 +68,7 @@ def grade_batch(request: HttpRequest):
     for i in current_jobs:
         current_jobs_size += i.spec.completions
 
-    print("Current jobs " + current_jobs_size)
+    print("Current jobs " + str(current_jobs_size))
     if current_jobs_size >= 10:
         return HttpResponse(status=200) 
 
