@@ -6,6 +6,7 @@ from .models import Assignment, GradingJob, JobStatusEnum, translate_okpy_status
 from django.db import transaction
 from .k8s import add_k_workers
 from kubernetes import client, config
+import os
 
 
 # Help with debugging
