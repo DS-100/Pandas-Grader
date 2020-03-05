@@ -96,12 +96,15 @@ def main(api_url):
 
             # Do the grading in another context to avoid name space collisions and the like 
             # Should really add change the autograder to do this.
+            print("MAKE NEW CONTEXT", flush=True, file=sys.stderr)
             ctx = mp.get_context('spawn')
             q = ctx.Queue()
             p = ctx.Process(target=gofer.ok.grade_notebook, args=(files_to_grade[0],))
             p.start()
             p.join() # this blocks until the process terminates
             result = q.get()
+            print("DONE USING NEW CONTEXT", flush=True)
+            print(result)
             okpy_result, path_to_score = gofer_wrangle(result)
             # print(res)
             path_to_score["bid"] = backup_id
@@ -132,7 +135,7 @@ def main(api_url):
     print("Sending log to api/ag/v1/report_done")
 
     if empty:
-        return False
+        return False 
 
     report_done_endpoint = f"{api_url}/api/ag/v1/report_done/{job_id}"
     resp = requests.post(report_done_endpoint, data=conv.convert(log_buffer.getvalue()))
