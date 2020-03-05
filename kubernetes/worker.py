@@ -38,7 +38,7 @@ def main(api_url):
     
     log_buffer = StringIO()
     conv = Ansi2HTMLConverter()
-    
+    empty = False
     try:
         with redirect_stdout(log_buffer), redirect_stderr(log_buffer):
             print("Worker starting", file=sys.stderr)
@@ -50,6 +50,7 @@ def main(api_url):
             if fetched["queue_empty"]:
                 print("Queue empty", file=sys.stderr)
                 logging.error("Request queue is empty, no work to do, quitting")
+                empty = True
                 return False
             
             skeleton_name = fetched["skeleton"]
@@ -125,11 +126,13 @@ def main(api_url):
         print("Stack trace", file=sys.stderr)
         print(traceback.format_exc(), file=sys.stderr)
         print(e)
-        return False
 
     print(log_buffer.getvalue())
     print("Pandas Version: " + str(pd.__version__), file=sys.stderr)
     print("Sending log to api/ag/v1/report_done")
+
+    if empty:
+        return False
 
     report_done_endpoint = f"{api_url}/api/ag/v1/report_done/{job_id}"
     resp = requests.post(report_done_endpoint, data=conv.convert(log_buffer.getvalue()))
