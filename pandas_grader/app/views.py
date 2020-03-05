@@ -149,7 +149,8 @@ def get_file(request: HttpRequest, assignment_id):
 
 def add_kube_workers(request: HttpRequest, num_workers):
     # Hacky solution to spin up more workers to pick up orphaned task
-    add_k_workers(int(num_workers))
+    for i in range(int(num_workers)):
+        add_k_workers(1)
     return HttpResponse("Workers added you hack")
 
 def requeue_jobs(request, access_token):
