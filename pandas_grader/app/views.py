@@ -46,11 +46,30 @@ def grade_batch(request: HttpRequest):
 
     print("Request data")
     print(req_data)
+
+    config.load_kube_config(os.path.expanduser("~/.kube/config"))
+    api_client = client.ApiClient()
+    job_api = client.BatchV1Api(api_client)
+    current_jobs = job_api.list_namespaced_job("data100-grader").items
+    current_jobs_size = 0
+
+    
+
+
+    # Get the current number of outstanding job completions
+    # Do not generate a new job if there are over 
+    # Does this result in an infinite loop from okpy? 
+
     
     # Here we allocate kubernetes workers. 
     print("Allocate workers")
-    add_k_workers(len(backup_ids))
-    
+    for i in current_jobs:
+        current_jobs_size += i.spec.completions
+
+    print("Current jobs " + current_jobs_size)
+    if current_jobs_size >= 10:
+        return HttpResponse(status=200) 
+
     # I think the saving job stuff is just for the UI. 
     # TODO(simon):
     # Address the issue of queue backpresssure:
@@ -67,6 +86,9 @@ def grade_batch(request: HttpRequest):
         job.save()
 
         job_ids.append(job.job_id)
+
+    for i in range(10):
+        add_k_workers(1)
     
     print(job_ids) 
     print("GRADE BATCH END")
