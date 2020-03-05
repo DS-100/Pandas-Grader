@@ -19,6 +19,10 @@ from multiprocessing import Process, Queue
 GRADING_DIR = os.getcwd()
 
 
+def get_gofer_grade(fname, q):
+    r = gofer.ok.grade_notebook(fname)
+    q.put(r)
+
 def gofer_wrangle(res):
     # unique-ify the score based on path
     path_to_score = {}
@@ -48,7 +52,8 @@ def main(api_url):
             fetched = r.json()
             print("fetched " + str(fetched), file=sys.stderr)
             if fetched["queue_empty"]:
-                print("Queue empty", file=sys.stderr)
+                print("Queue empty 1")
+                print("Queue empty 1", file=sys.stderr)
                 logging.error("Request queue is empty, no work to do, quitting")
                 empty = True
                 return False
@@ -99,7 +104,7 @@ def main(api_url):
             print("MAKE NEW CONTEXT", flush=True, file=sys.stderr)
             ctx = mp.get_context('spawn')
             q = ctx.Queue()
-            p = ctx.Process(target=gofer.ok.grade_notebook, args=(files_to_grade[0],))
+            p = ctx.Process(target=get_gofer_grade, args=(files_to_grade[0],q,))
             p.start()
             p.join() # this blocks until the process terminates
             result = q.get()
@@ -135,13 +140,19 @@ def main(api_url):
     print("Sending log to api/ag/v1/report_done")
 
     if empty:
+        print("Queue empty 2")
+        print("Queue empty 2", file=sys.stderr)
         return False 
 
     report_done_endpoint = f"{api_url}/api/ag/v1/report_done/{job_id}"
     resp = requests.post(report_done_endpoint, data=conv.convert(log_buffer.getvalue()))
+    
     if resp.status_code == 200: 
+        print("Everything Successful")
+        print("Everything Successful", file=sys.stderr)
         return True
     else: 
+        print("Response error code: " + str(resp.status_code))
         print("Response error code: " + str(resp.status_code), file=sys.stderr)
         return False
 
@@ -151,5 +162,6 @@ if __name__ == "__main__":
         cont = True
         while(cont):
             cont = main()
+
     except Exception as e:
         traceback.print_exc()
