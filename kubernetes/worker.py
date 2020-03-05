@@ -13,6 +13,8 @@ from ansi2html import Ansi2HTMLConverter
 
 import gofer.ok
 import pandas as pd
+import multiprocessing as mp
+from multiprocessing import Process, Queue
 
 GRADING_DIR = os.getcwd()
 
@@ -48,7 +50,7 @@ def main(api_url):
             if fetched["queue_empty"]:
                 print("Queue empty", file=sys.stderr)
                 logging.error("Request queue is empty, no work to do, quitting")
-                return 1
+                return False
             
             skeleton_name = fetched["skeleton"]
             skeleton_zip = requests.get(f"{api_url}/api/ag/v1/skeleton/{skeleton_name}")
@@ -90,9 +92,16 @@ def main(api_url):
             assert len(files_to_grade) == 1, "Only support grading 1 notebook file"
 
             os.chdir(GRADING_DIR)
-            okpy_result, path_to_score = gofer_wrangle(
-                gofer.ok.grade_notebook(files_to_grade[0])
-            )
+
+            # Do the grading in another context to avoid name space collisions and the like 
+            # Should really add change the autograder to do this.
+            ctx = mp.get_context('spawn')
+            q = ctx.Queue()
+            p = ctx.Process(target=gofer.ok.grade_notebook, args=(files_to_grade[0],))
+            p.start()
+            p.join() # this blocks until the process terminates
+            result = q.get()
+            okpy_result, path_to_score = gofer_wrangle(result)
             # print(res)
             path_to_score["bid"] = backup_id
             path_to_score["assignment"] = skeleton_name
@@ -116,6 +125,7 @@ def main(api_url):
         print("Stack trace", file=sys.stderr)
         print(traceback.format_exc(), file=sys.stderr)
         print(e)
+        return False
 
     print(log_buffer.getvalue())
     print("Pandas Version: " + str(pd.__version__), file=sys.stderr)
@@ -123,11 +133,17 @@ def main(api_url):
 
     report_done_endpoint = f"{api_url}/api/ag/v1/report_done/{job_id}"
     resp = requests.post(report_done_endpoint, data=conv.convert(log_buffer.getvalue()))
-    assert resp.status_code == 200
+    if resp.status_code == 200: 
+        return True
+    else: 
+        print("Response error code: " + str(resp.status_code), file=sys.stderr)
+        return False
 
 
 if __name__ == "__main__":
     try:
-        main()
+        cont = True
+        while(cont):
+            cont = main()
     except Exception as e:
         traceback.print_exc()
