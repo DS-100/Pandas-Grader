@@ -89,7 +89,7 @@ def grade_batch(request: HttpRequest):
 
         job_ids.append(job.job_id)
 
-    for i in range(10):
+    for i in range(40):
         add_k_workers(1)
     
     print(job_ids) 
