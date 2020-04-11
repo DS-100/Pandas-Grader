@@ -55,8 +55,6 @@ def grade_batch(request: HttpRequest):
     current_jobs = job_api.list_namespaced_job("data100-grader").items
     current_jobs_size = 0
 
-    
-
 
     # Get the current number of outstanding job completions
     # Do not generate a new job if there are over 
@@ -69,8 +67,6 @@ def grade_batch(request: HttpRequest):
         current_jobs_size += i.spec.completions
 
     print("Current jobs " + str(current_jobs_size))
-    if current_jobs_size >= 10:
-        return HttpResponse(status=200) 
 
     # I think the saving job stuff is just for the UI. 
     # TODO(simon):
@@ -89,8 +85,13 @@ def grade_batch(request: HttpRequest):
 
         job_ids.append(job.job_id)
 
-    for i in range(40):
+    if len(backup_ids == 1):
         add_k_workers(1)
+    elif current_jobs_size <= 10:
+        for i in range(40):
+            add_k_workers(1)
+    else:
+        return HttpResponse(status=200)
     
     print(job_ids) 
     print("GRADE BATCH END")
