@@ -85,7 +85,7 @@ def grade_batch(request: HttpRequest):
 
         job_ids.append(job.job_id)
 
-    if len(backup_ids == 1):
+    if len(backup_ids) == 1:
         add_k_workers(1)
     elif current_jobs_size <= 10:
         for i in range(40):
