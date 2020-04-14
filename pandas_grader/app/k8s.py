@@ -69,4 +69,8 @@ spec:
           operator: "Equal"
           value: "user"
           effect: "NoSchedule"
+    volumes:
+      - name: home
+        mountPath: /home/jovyan/shared
+        subPath: _shared
 """
