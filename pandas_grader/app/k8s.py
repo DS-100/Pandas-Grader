@@ -56,6 +56,10 @@ spec:
             memory: "512M"
           limits:
             memory: "2.25G"
+        volumeMounts:
+          - name: home
+            mountPath: /home/jovyan/shared
+            subPath: _shared
       restartPolicy: Never
       imagePullPolicy: Always
       nodeSelector:
@@ -69,8 +73,4 @@ spec:
           operator: "Equal"
           value: "user"
           effect: "NoSchedule"
-    volumes:
-      - name: home
-        mountPath: /home/jovyan/shared
-        subPath: _shared
 """
