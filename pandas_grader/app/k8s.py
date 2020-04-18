@@ -45,6 +45,11 @@ spec:
   completions: {{ num_jobs }}
   template:
     spec:
+      volumes:
+      - name: home
+        nfs:
+          path: /export/data100homes/homes/prod/home
+          server: nfsserver1
       containers:
       - name: {{ name }}
         image: wwhuang/jhub-gofer:latest
