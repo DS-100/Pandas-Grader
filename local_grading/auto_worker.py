@@ -3,7 +3,7 @@ import subprocess
 import traceback
 import zipfile
 import sys
-from io import StringIO
+import shutil
 
 import click
 import requests
@@ -17,9 +17,16 @@ from multiprocessing import Process, Queue
 Grade single assignment
 """
 
+DEV_PATH = '/Users/wwhuang/Dropbox/git/sp20-dev/dist/'
+ASSIGNMENT_TYPE = 'hw'
+ASSIGNMENT_NUM = '4'
+LOCAL_FILE_TO_GRADE = 'hw4.ipynb'
+
 GRADING_DIR = os.getcwd()
 ACCESS_TOKEN = ''
-LOCAL_FILE_TO_GRADE = 'hw4.ipynb'
+
+
+assignment_path = DEV_PATH + ASSIGNMENT_TYPE + '/' + ASSIGNMENT_TYPE + ASSIGNMENT_NUM + '/autograder/'
 
 
 def get_gofer_grade(fname, q):
@@ -42,6 +49,8 @@ if __name__ == '__main__':
 
     try:
         os.chdir(GRADING_DIR)
+        shutil.copyfile(LOCAL_FILE_TO_GRADE, assignment_path + LOCAL_FILE_TO_GRADE)
+        os.chdir(assignment_path)
         print("STARTING THINGS UP ")
         result = gofer.ok.grade_notebook(LOCAL_FILE_TO_GRADE)
         print("DONE USING NEW CONTEXT", flush=True)
