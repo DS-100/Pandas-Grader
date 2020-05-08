@@ -18,9 +18,9 @@ Grade single assignment
 """
 
 DEV_PATH = '/Users/wwhuang/Dropbox/git/sp20-dev/dist/'
-ASSIGNMENT_TYPE = 'hw'
-ASSIGNMENT_NUM = '4'
-LOCAL_FILE_TO_GRADE = 'hw4.ipynb'
+ASSIGNMENT_TYPE = 'lab'
+ASSIGNMENT_NUM = '05'
+LOCAL_FILE_TO_GRADE = 'lab05.ipynb'
 
 GRADING_DIR = os.getcwd()
 ACCESS_TOKEN = ''

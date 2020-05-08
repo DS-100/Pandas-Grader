@@ -9,7 +9,7 @@ For `auto_worker.py`:
 2. Set `DEV_PATH`, `ASSIGNMENT_TYPE`, `ASSIGNMENT_NUM`, and `LOCAL_FILE_TO_GRADE` to the appropriate values. 
 `DEV_PATH` is the filepath to the `dist` folder in `sp20-dev`. 
 `ASSIGNMENT_TYPE` is lab, hw, or proj. 
-`ASSIGNMENT_NUM` is the assignment number, such as `1`, `2a`. No capitals. 
+`ASSIGNMENT_NUM` is the assignment number, such as `1`, `2a`. No capitals, and must match the folder names in `dist`, so you might need to write `02` instead of `2`.
 `LOCAL_FILE_TO_GRADE` is the filepath to the students submission you are grading.
 
 3. Run `auto_worker.py`. If the paths are set correctly, the script will copy the students assignment over to 
