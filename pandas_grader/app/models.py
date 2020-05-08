@@ -74,7 +74,7 @@ class GradingJob(models.Model):
         self.status = JobStatusEnum.RUNNING
 
     def requeue(self):
-        self.dequeue_time = models.DateTimeField(null=True)
+        self.dequeue_time = timezone.now()
         self.status = JobStatusEnum.QUEUED
 
     def done(self):
