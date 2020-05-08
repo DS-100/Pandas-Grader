@@ -27,7 +27,7 @@ ACCESS_TOKEN = ''
 
 
 assignment_path = DEV_PATH + ASSIGNMENT_TYPE + '/' + ASSIGNMENT_TYPE + ASSIGNMENT_NUM + '/autograder/'
-
+print(assignment_path)
 
 def get_gofer_grade(fname, q):
     r = gofer.ok.grade_notebook(fname)
@@ -51,6 +51,7 @@ if __name__ == '__main__':
         os.chdir(GRADING_DIR)
         shutil.copyfile(LOCAL_FILE_TO_GRADE, assignment_path + LOCAL_FILE_TO_GRADE)
         os.chdir(assignment_path)
+        sys.path.append(assignment_path)
         print("STARTING THINGS UP ")
         result = gofer.ok.grade_notebook(LOCAL_FILE_TO_GRADE)
         print("DONE USING NEW CONTEXT", flush=True)
@@ -67,7 +68,7 @@ if __name__ == '__main__':
         print(okpy_result["msg"])
         print("-----------SCORE--------------")
         print(okpy_result["total"])
-
+        sys.path.remove(assignment_path)
     except Exception as e:
         print("Things went wrong")
         print("Exception: " + str(e))
