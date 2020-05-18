@@ -18,9 +18,9 @@ Grade single assignment
 """
 
 DEV_PATH = '/Users/wwhuang/Dropbox/git/sp20-dev/dist/'
-ASSIGNMENT_TYPE = 'lab'
-ASSIGNMENT_NUM = '05'
-LOCAL_FILE_TO_GRADE = 'lab05.ipynb'
+ASSIGNMENT_TYPE = 'proj'
+ASSIGNMENT_NUM = '1a'
+LOCAL_FILE_TO_GRADE = 'proj1a.ipynb'
 
 GRADING_DIR = os.getcwd()
 ACCESS_TOKEN = ''
@@ -68,6 +68,9 @@ if __name__ == '__main__':
         print(okpy_result["msg"])
         print("-----------SCORE--------------")
         print(okpy_result["total"])
+        w = open(GRADING_DIR + '/' + 'output.txt','w')
+        w.write(okpy_result['msg'])
+        w.write(str(okpy_result['total']))
         sys.path.remove(assignment_path)
     except Exception as e:
         print("Things went wrong")
